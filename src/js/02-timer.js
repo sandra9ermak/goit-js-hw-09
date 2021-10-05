@@ -1,5 +1,18 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
+
+const input = document.querySelector('input#datetime-picker');
+const startBtn = document.querySelector('[data-start]');
+const days = document.querySelector('[data-days]');
+const hours = document.querySelector('[data-hours]');
+const minutes = document.querySelector('[data-minutes]');
+const seconds = document.querySelector('[data-seconds]');
+const timerForm = document.querySelector('.field');
+let selectedDate = new Date();
+let nowDate = new Date();
+let timer = null;
+let convertDateMs = null;
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -26,33 +39,33 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    console.log(selectedDates[0]);
+    selectedDate = selectedDates[0];
+    if (selectedDate < nowDate) {
+      Notiflix.Notify.warning("Please choose a date in the future");
+      startBtn.setAttribute('disabled', true);
+    } else {
+      startBtn.removeAttribute('disabled');
+    }
   },
 };
+flatpickr(input, options);
 
-const dateSelector = document.querySelector('input#datetime-picker');
-const startBtn = document.querySelector('[data-start]');
-const dateNow = new Date();
-const dateInput = new Date(dateSelector.value);
-flatpickr(dateSelector, options);
+const addLeadingZero = (value =>  value.toString().padStart(2, '0'));
 
-//const getNowDate = dateNow.getDay + ' '
-
-startBtn.addEventListener('click', event => {
-    // if (dateSelector.value - dateNow.value === 0) {
-    //     window.alert('ok');
-    //     //startBtn.removeAttribute('disabled');
-    // }
-    // if (dateSelector.value < dateNow.getDay()) {
-    //     console.log('oj');
-    //     window.alert("Please choose a date in the future");
-    //     //startBtn.setAttribute('disabled', 'true');
-    // }
-
-    //console.log(convertMs(dateNow) - dateSelector.value);
-    const getNowTime = dateNow.getTime();
-    //const getInputTime = dateSelector.getTime();
-    //console.log(dateSelector.value);
-    //console.log(dateSelector.value.getTime());
-    console.log();
+let dif = 0;
+startBtn.addEventListener('click', e => {
+  timer = setInterval(() => {
+    nowDate = new Date();
+    if (selectedDate > nowDate) {
+      const resultDate = selectedDate - nowDate;
+      convertDateMs = convertMs(resultDate);
+      days.textContent = addLeadingZero(convertDateMs.days);
+      hours.textContent = addLeadingZero(convertDateMs.hours);
+      minutes.textContent = addLeadingZero(convertDateMs.minutes);
+      seconds.textContent = addLeadingZero(convertDateMs.seconds);
+    } else {
+      clearInterval(timer);
+      Notiflix.Notify.failure('Time is up!');
+    }
+  }, 1000);
 });
