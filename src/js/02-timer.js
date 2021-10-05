@@ -46,7 +46,7 @@ startBtn.addEventListener('click', event => {
     // if (dateSelector.value < dateNow.getDay()) {
     //     console.log('oj');
     //     window.alert("Please choose a date in the future");
-    //     //startBtn.setAttribute('disabled', 'disabled');
+    //     //startBtn.setAttribute('disabled', 'true');
     // }
 
     //console.log(convertMs(dateNow) - dateSelector.value);
