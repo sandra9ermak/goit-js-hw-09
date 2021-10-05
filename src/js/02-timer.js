@@ -52,12 +52,11 @@ flatpickr(input, options);
 
 const addLeadingZero = (value =>  value.toString().padStart(2, '0'));
 
-let dif = 0;
 startBtn.addEventListener('click', e => {
   timer = setInterval(() => {
-    nowDate = new Date();
-    if (selectedDate > nowDate) {
-      const resultDate = selectedDate - nowDate;
+    let currentDate = new Date();
+    if (selectedDate > currentDate) {
+      const resultDate = selectedDate - currentDate;
       convertDateMs = convertMs(resultDate);
       days.textContent = addLeadingZero(convertDateMs.days);
       hours.textContent = addLeadingZero(convertDateMs.hours);
@@ -69,3 +68,9 @@ startBtn.addEventListener('click', e => {
     }
   }, 1000);
 });
+
+const stopBtn = document.querySelector('[data-stop]');
+
+stopBtn.addEventListener('click', event => {
+  clearInterval(timer);
+})
