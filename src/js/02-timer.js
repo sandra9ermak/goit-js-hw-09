@@ -62,9 +62,11 @@ startBtn.addEventListener('click', e => {
       hours.textContent = addLeadingZero(convertDateMs.hours);
       minutes.textContent = addLeadingZero(convertDateMs.minutes);
       seconds.textContent = addLeadingZero(convertDateMs.seconds);
-    } else {
+    } else if (selectedDate < currentDate){
       clearInterval(timer);
       Notiflix.Notify.failure('Time is up!');
+    } else {
+      clearInterval(timer);
     }
   }, 1000);
 });
