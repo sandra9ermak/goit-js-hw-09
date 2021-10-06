@@ -13,6 +13,7 @@ let selectedDate = new Date();
 let nowDate = new Date();
 let timer = null;
 let convertDateMs = null;
+startBtn.setAttribute('disabled', true);
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -42,7 +43,6 @@ const options = {
     selectedDate = selectedDates[0];
     if (selectedDate < nowDate) {
       Notiflix.Notify.warning("Please choose a date in the future");
-      startBtn.setAttribute('disabled', true);
     } else {
       startBtn.removeAttribute('disabled');
     }
